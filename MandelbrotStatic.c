@@ -7,7 +7,7 @@
 #define HEIGHT 480
 #define MAX_ITER 255
 
-void cal_pixel(int image[HEIGHT][WIDTH], int start, int end) {
+void cal_pixel(int image[HEIGHT][WIDTH], int start, int end) { //pixel computation to get the color of each pixel
     for (int i=start; i<end; i++) {
         for (int j=0; j<WIDTH; j++) {
             double x = (j - WIDTH / 2.0) * 4.0 / WIDTH;
@@ -63,12 +63,12 @@ int main(int argc, char *argv[]) {
      
     if (rank == 0) {
         for (int i=1; i<size; i++) {
-            MPI_Recv(&image[i * rfp][0], rfp * WIDTH, MPI_INT, i, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+            MPI_Recv(&image[i*rfp][0], rfp * WIDTH, MPI_INT, i, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE); //recieving colors and coordinates from slaves
         } 
         printf("Execution time: %.3f ms\n", (end_time - start_time)*1000);
         save_pgm("mandelbrotstatic.pgm", image);  
     } else {
-        MPI_Send(&image[start][0], rfp * WIDTH, MPI_INT, 0, 1, MPI_COMM_WORLD);
+        MPI_Send(&image[start][0], rfp * WIDTH, MPI_INT, 0, 1, MPI_COMM_WORLD); //sending coordinates and color to master
     }
 
     MPI_Finalize();
