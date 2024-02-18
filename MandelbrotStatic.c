@@ -10,16 +10,18 @@
 void cal_pixel(int image[HEIGHT][WIDTH], int start, int end) {
     for (int i=start; i<end; i++) {
         for (int j=0; j<WIDTH; j++) {
-            double real = (j - WIDTH / 2.0) * 4.0 / WIDTH;
-            double imag = (i - HEIGHT / 2.0) * 4.0 / HEIGHT;
+            double x = (j - WIDTH / 2.0) * 4.0 / WIDTH;
+            double y = (i - HEIGHT / 2.0) * 4.0 / HEIGHT;
+            double real=x;
+            double imag=y;
 	    int k;
             for (k=0; k<MAX_ITER; k++) {
                 double real2 = real*real;
                 double imag2 = imag*imag;
                 if (real2 + imag2 > 4.0)
                     break;
-                imag = 2*real*imag + imag;
-                real = real2 - imag2 + real;
+                imag = 2*real*imag + y;
+                real = real2 - imag2 + x;
             }
             image[i][j]=k;
         }
